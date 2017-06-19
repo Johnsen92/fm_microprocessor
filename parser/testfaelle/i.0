@@ -1,6 +1,0 @@
-f()
-  if 0 then
-    x: return 0;
-    x: goto x;
-  end;
-end;

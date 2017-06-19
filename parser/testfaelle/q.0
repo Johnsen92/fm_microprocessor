@@ -1,3 +1,0 @@
-f()
-  return x+x+x;
-end;
