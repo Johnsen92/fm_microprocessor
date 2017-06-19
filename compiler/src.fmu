@@ -1,0 +1,16 @@
+	ADC_IN	r1
+	MUL		r1,r2
+	SIN 	r2,r3
+	MOV 	r2
+	ADD 	r3,r4
+	SUB 	r3,r4
+	INC 	r3
+	CP 		r3,r4
+	DAC_OUT r3
+	MOV		r3,0xFF
+	ADDI	r15,0x01
+	JMP		0x1FFFFF
+	JC		0x000001
+	JNC		0d25
+	JZ		0b000000111111111111
+	JNZ		0x000001

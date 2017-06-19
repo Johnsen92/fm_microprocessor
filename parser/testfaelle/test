@@ -1,0 +1,55 @@
+#!/bin/sh
+
+beispiel=parser
+allow_null_glob_expansion=1
+shopt -s nullglob
+PROGRAM=./$beispiel
+errnum=0
+prgnum=0
+
+LOC=./testfaelle
+LOC2=.
+
+
+if [ -e test ]; then 
+  cd ..
+fi
+  echo 'Testing "make clean"'
+  make clean
+  echo 'Testing "make"'
+  make
+
+if test ! -x $PROGRAM
+then
+  echo "[Error] executable $PROGRAM not generated! ('make')"
+  exit 1
+fi
+for i in $LOC/*.[012] $LOC2/*.[012]
+do
+        echo "---------------------------------------------------------------------"
+	echo "Test file: $i"
+        echo "Input:"
+        echo "======"
+        echo
+        cat $i
+        echo
+        let prgnum=prgnum+1
+	$PROGRAM <$i >/dev/null 2>/dev/null
+	retval=$?
+	if test $retval -eq ${i##.*.}
+	then
+		echo "Correct exit status."
+	else
+                echo "[Error] Status is $retval but ${i##.*.} was expected!"
+                echo   
+                let errnum=errnum+1   
+	fi
+done
+echo "---------------------------------------------------------------------"
+echo
+let corrnum=prgnum-errnum
+echo "Statistics:"
+echo "==========="
+echo "           $prgnum Tests total"
+echo "           $corrnum Tests passed"
+echo "           $errnum Tests failed"
