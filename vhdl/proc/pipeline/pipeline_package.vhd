@@ -1,3 +1,7 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
 package pipeline_package is
     
     -------------------------------
@@ -6,7 +10,6 @@ package pipeline_package is
     constant DATA_WIDTH     : integer := 16;
     constant NUM_REGS       : integer := 20;
     constant NUM_HL_REGS    : integer := 2;
-    constant PC_WIDTH       : integer := 16;
     
     -------------------------------
     -- Instruction Set Fields    --
