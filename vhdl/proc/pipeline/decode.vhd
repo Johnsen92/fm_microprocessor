@@ -9,8 +9,8 @@ entity decode is
         clk         : in std_logic;
         reset       : in std_logic;
         instr       : in INSTR_T;
-        read_addr_a : in REG_ADDR_T; --address A for register file read
-        read_addr_b : in REG_ADDR_T; --address B for register file read
+        rdaddr_a    : in REG_ADDR_T; --address A for register file read
+        rdaddr_b    : in REG_ADDR_T; --address B for register file read
         exec_op     : out EXEC_OP_T; --decoded operation for exec stage
     );
 end decode;
@@ -55,7 +55,7 @@ begin
                 exec_op.special_op <= SPECIAL_SIN;
                 exec_op.writeback <= '1';
             when OP_MOV =>
-                --TODO
+                exec_op.writeback <= '1';
             when OP_ADD =>
                 exec_op.alu_op <= ALU_ADD;
                 exec_op.writeback <= '1';
@@ -68,7 +68,7 @@ begin
                 exec_op.use_imm <= '1';
                 exec_op.writeback <= '1';
             when OP_CP =>
-                --TODO
+                exec_op.alu_op <= ALU_SUB;
             when OP_DAC_OUT =>
                 exec_op.special_op <= SPECIAL_DAC_OUT;
             when OP_AND =>
@@ -81,7 +81,8 @@ begin
                 exec_op.alu_op <= ALU_XOR;
                 exec_op.writeback <= '1';
             when OP_MOVI =>
-                --TODO
+                exec_op.use_imm <= '1';
+                exec_op.writeback <= '1';
             when OP_ADDI =>
                 exec_op.alu_op <= ALU_ADD;
                 exec_op.use_imm <= '1';
