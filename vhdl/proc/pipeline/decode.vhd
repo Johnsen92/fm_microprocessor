@@ -9,13 +9,29 @@ entity decode is
         clk         : in std_logic;
         reset       : in std_logic;
         instr       : in INSTR_T;
-        rdaddr_a    : in REG_ADDR_T; --address A for register file read
-        rdaddr_b    : in REG_ADDR_T; --address B for register file read
-        exec_op     : out EXEC_OP_T; --decoded operation for exec stage
+        wr          : in std_logic;
+        wraddr      : in REG_ADDR_T;
+        wrdata      : in REG_DATA_T;
+         -- for exec/writeback stage:
+        exec_op     : out EXEC_OP_T
     );
 end decode;
 
 architecture decode_arc of decode is
+    component regfile is
+        port (
+            clk         : in std_logic;
+            reset       : in std_logic;
+            rdaddr_a    : in REG_ADDR_T;
+            rdaddr_b    : in REG_ADDR_T;
+            wr          : in std_logic;
+            wraddr      : in REG_ADDR_T;
+            wrdata      : in REG_DATA_T;
+            rddata_a    : out REG_DATA_T;
+            rddata_b    : out REG_DATA_T
+        );
+    end component;
+    
     signal instr_int : INSTR_T;
         alias op is instr_int(INSTR_FIELD_OP'high downto INSTR_FIELD_OP'low);
         alias rd is instr_int(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
@@ -23,25 +39,41 @@ architecture decode_arc of decode is
         alias rt is instr_int(INSTR_FIELD_RT'high downto INSTR_FIELD_RT'low);
         alias imm is instr_int(INSTR_FIELD_IMM'high downto INSTR_FIELD_IMM'low);
         alias addr is instr_int(INSTR_FIELD_ADDR'high downto INSTR_FIELD_ADDR'low);
+        
+    alias rdaddr_a is instr(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
+    alias rdaddr_b is instr(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
     
     signal regfile_dataa, regfile_datab : REG_DATA_T;
 begin
+    regfile_inst : regfile
+        port map (
+            clk => clk,
+            reset => reset,
+            rdaddr_a => rdaddr_a,
+            rdaddr_b => rdaddr_b,
+            wr => wr,
+            wraddr => wraddr,
+            wrdata => wrdata,
+            rddata_a => regfile_dataa,
+            rddata_b => regfile_datab
+        );
+    
     do_decode : process(instr_int)
     begin
         --default:
         exec_op <= (
-            alu_op      <= ALU_NOP,
-            jmp_op      <= JMP_NOP,
-            special_op  <= SPECIAL_NOP,
-            dataa       <= regfile_dataa,
-            datab       <= regfile_datab,
-            rd          <= rd,
-            rs          <= rs,
-            rt          <= rt,
-            imm         <= imm,
-            addr        <= addr,
-            use_imm     <= '0',
-            writeback   <= '0'
+            alu_op      => ALU_NOP,
+            jmp_op      => JMP_NOP,
+            special_op  => SPECIAL_NOP,
+            dataa       => regfile_dataa,
+            datab       => regfile_datab,
+            rd          => rd,
+            rs          => rs,
+            rt          => rt,
+            imm         => imm,
+            addr        => addr,
+            use_imm     => '0',
+            writeback   => '0'
         );
         
         case op is
@@ -111,6 +143,8 @@ begin
                 exec_op.jmp_op <= JMP_JNZ;
             when OP_WAIT =>
                 exec_op.special_op <= SPECIAL_WAIT;
+            when others =>
+                -- do nothing
         end case;
     end process;
     

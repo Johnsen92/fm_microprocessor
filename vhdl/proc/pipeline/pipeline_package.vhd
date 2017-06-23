@@ -20,22 +20,22 @@ package pipeline_package is
     constant IMM_WIDTH      : integer := 11;
     constant JMP_ADDR_WIDTH : integer := 16;
     -- used for reading fields from instr
-    type INSTR_FIELD_OP     is range 21 downto 16;
-    type INSTR_FIELD_RD     is range 15 downto 11;
-    type INSTR_FIELD_RS     is range 10 downto 6;
-    type INSTR_FIELD_RT     is range 5  downto 1; --TODO only need 21 bits; need RT field? c=a+b or b=a+b?
-    type INSTR_FIELD_IMM    is range 10 downto 0;
-    type INSTR_FIELD_ADDR   is range 15 downto 0;
+    subtype INSTR_FIELD_OP      is integer range 21 downto 16;
+    subtype INSTR_FIELD_RD      is integer range 15 downto 11;
+    subtype INSTR_FIELD_RS      is integer range 10 downto 6;
+    subtype INSTR_FIELD_RT      is integer range 5  downto 1; --TODO only need 21 bits; need RT field? c=a+b or b=a+b?
+    subtype INSTR_FIELD_IMM     is integer range 10 downto 0;
+    subtype INSTR_FIELD_ADDR    is integer range 15 downto 0;
     
     -------------------------------
     -- Pipeline-Relevant Types   --
     -------------------------------
-    type INSTR_T is std_logic_vector(INSTR_WIDTH-1 downto 0);
-    type OP_T is std_logic_vector(OP_WIDTH-1 downto 0);
-    type REG_ADDR_T is std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-    type REG_DATA_T is std_logic_vector(DATA_WIDTH-1 downto 0);
-    type IMM_DATA_T is std_logic_vector(IMM_WIDTH-1 downto 0);
-    type JMP_ADDR_T is std_logic_vector(JMP_ADDR_WIDTH-1 downto 0);
+    subtype INSTR_T is std_logic_vector(INSTR_WIDTH-1 downto 0);
+    subtype OP_T is std_logic_vector(OP_WIDTH-1 downto 0);
+    subtype REG_ADDR_T is std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    subtype REG_DATA_T is std_logic_vector(DATA_WIDTH-1 downto 0);
+    subtype IMM_DATA_T is std_logic_vector(IMM_WIDTH-1 downto 0);
+    subtype JMP_ADDR_T is std_logic_vector(JMP_ADDR_WIDTH-1 downto 0);
     type ALU_OP_T is (
         ALU_NOP,
         ALU_ADD,
@@ -55,6 +55,7 @@ package pipeline_package is
     type SPECIAL_OP_T is (
         SPECIAL_NOP,
         SPECIAL_ADC_IN,
+        SPECIAL_MUL,
         SPECIAL_SIN,
         SPECIAL_DAC_OUT,
         SPECIAL_WAIT

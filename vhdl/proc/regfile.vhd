@@ -16,7 +16,7 @@ entity regfile is
         rddata_a    : out REG_DATA_T;
         rddata_b    : out REG_DATA_T
     );
-end entity regfile;
+end regfile;
 
 architecture regfile_arc of regfile is
     type REG_T is array(2**REG_ADDR_WIDTH-1 downto 0) of REG_DATA_T;
@@ -25,7 +25,7 @@ architecture regfile_arc of regfile is
     signal wraddr_int : integer range 0 to 2**REG_ADDR_WIDTH-1; -- async
 	signal regfile : REG_T := (others => (others => '0'));
 begin
-    wraddr_int <= to_integer((unsigned(wraddr));
+    wraddr_int <= to_integer((unsigned(wraddr)));
 
     output : process(rdaddr_a_int, rdaddr_b_int, wraddr_int, wr, wrdata, regfile)
     begin
@@ -65,8 +65,8 @@ begin
 
                 -- write to wraddr
                 if wr = '1' then
-                    if wraddr /= 0 then
-                        regfile(to_integer(unsigned(wraddr))) <= wrdata;
+                    if(wraddr_int /= 0) then
+                        regfile(wraddr_int) <= wrdata;
                     end if;
                 end if;
             end if;

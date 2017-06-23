@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity wait_unit is
     generic (
-        DATA_WIDTH  : integer := 11;
+        DATA_WIDTH  : integer := 11
     );
 	port (
         clk         : in std_logic;
@@ -19,18 +19,22 @@ architecture wait_unit_arc of wait_unit is
     signal start_hold       : std_logic;
     signal start_hold_next  : std_logic;
     signal countdown        : integer range 0 to 2**DATA_WIDTH-1;
+    signal wait_cycles_int  : integer range 0 to 2**DATA_WIDTH-1;
 begin
-    done <= (countdown = 0 and (start = '1' or start_hold = '1'));
     wait_cycles_int <= to_integer(unsigned(wait_cycles));
     
     next_logic : process(start, start_hold, countdown)
     begin
         --default:
         start_hold_next <= start_hold;
+        done <= '0';
         
         if(countdown = 0) then
             start_hold_next <= '0';
-        else if(start = '1') then
+            if(start = '1' or start_hold = '1') then
+                done <= '1';
+            end if;
+        elsif(start = '1') then
             start_hold_next <= '1';
         end if;
     end process;
@@ -46,7 +50,7 @@ begin
                 
                 if(start = '1') then
                     countdown <= wait_cycles_int;
-                else if(countdown /= 0) then
+                elsif(countdown /= 0) then
                     countdown <= countdown - 1;
                 end if;
             end if;

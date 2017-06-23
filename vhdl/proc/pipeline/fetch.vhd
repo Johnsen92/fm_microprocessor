@@ -9,9 +9,9 @@ entity fetch is
     port (
         clk         : in std_logic;
         reset       : in std_logic;
-        jmp         : in std_logic
+        jmp         : in std_logic;
         jmp_pc      : in PC_T;
-        instr       : in INSTR_T;
+        instr       : out INSTR_T
     );
 end fetch;
 
@@ -40,10 +40,10 @@ begin
                 instr <= (others => '0');
             else
                 pc <= pc_next;
-                if(pc > program'high);
+                if(pc > PROGRAM'high) then
                     instr <= (others => '0');
                 else
-                    instr <= program(pc);
+                    instr <= PROGRAM(pc);
                 end if;
             end if;
         end if;
