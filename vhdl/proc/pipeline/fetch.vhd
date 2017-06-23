@@ -17,6 +17,7 @@ end fetch;
 
 architecture fetch_arc of fetch is
     signal pc, pc_next : PC_T;
+    signal reset_hold : std_logic;
 begin
     pc_logic : process(pc, jmp)
     begin
@@ -35,12 +36,18 @@ begin
     sync : process(reset, clk)
     begin
         if(rising_edge(clk)) then
+            reset_hold <= reset;
+            
             if(reset = '1') then
                 pc <= 0;
                 instr <= (others => '0');
             else
-                pc <= pc_next;
-                if(pc > PROGRAM'high) then
+                if(reset_hold = '1') then
+                    pc <= 0;
+                else
+                    pc <= pc_next;
+                end if;
+                if(pc = MAX_PC) then
                     instr <= (others => '0');
                 else
                     instr <= PROGRAM(pc);

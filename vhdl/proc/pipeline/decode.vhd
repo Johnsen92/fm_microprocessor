@@ -9,10 +9,11 @@ entity decode is
         clk         : in std_logic;
         reset       : in std_logic;
         instr       : in INSTR_T;
+        -- for regfile:
         wr          : in std_logic;
         wraddr      : in REG_ADDR_T;
         wrdata      : in REG_DATA_T;
-         -- for exec/writeback stage:
+        -- for exec/writeback stage:
         exec_op     : out EXEC_OP_T
     );
 end decode;
@@ -33,12 +34,12 @@ architecture decode_arc of decode is
     end component;
     
     signal instr_int : INSTR_T;
-        alias op is instr_int(INSTR_FIELD_OP'high downto INSTR_FIELD_OP'low);
-        alias rd is instr_int(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
-        alias rs is instr_int(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
-        alias rt is instr_int(INSTR_FIELD_RT'high downto INSTR_FIELD_RT'low);
-        alias imm is instr_int(INSTR_FIELD_IMM'high downto INSTR_FIELD_IMM'low);
-        alias addr is instr_int(INSTR_FIELD_ADDR'high downto INSTR_FIELD_ADDR'low);
+        alias op : OP_T is instr_int(INSTR_FIELD_OP'high downto INSTR_FIELD_OP'low);
+        alias rd : REG_ADDR_T is instr_int(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
+        alias rs : REG_ADDR_T is instr_int(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
+        alias rt : REG_ADDR_T is instr_int(INSTR_FIELD_RT'high downto INSTR_FIELD_RT'low);
+        alias imm : IMM_DATA_T is instr_int(INSTR_FIELD_IMM'high downto INSTR_FIELD_IMM'low);
+        alias addr : JMP_ADDR_T is instr_int(INSTR_FIELD_ADDR'high downto INSTR_FIELD_ADDR'low);
         
     alias rdaddr_a is instr(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
     alias rdaddr_b is instr(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
