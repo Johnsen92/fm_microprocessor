@@ -16,26 +16,18 @@ entity wait_unit is
 end wait_unit;
 
 architecture wait_unit_arc of wait_unit is
-    signal start_hold       : std_logic;
-    signal start_hold_next  : std_logic;
     signal countdown        : integer range 0 to 2**DATA_WIDTH-1;
     signal wait_cycles_int  : integer range 0 to 2**DATA_WIDTH-1;
+	signal start_hold		: std_logic;
 begin
     wait_cycles_int <= to_integer(unsigned(wait_cycles));
     
-    next_logic : process(start, start_hold, countdown)
+    next_logic : process(start_hold, countdown)
     begin
-        --default:
-        start_hold_next <= start_hold;
-        done <= '0';
-        
-        if(countdown = 0) then
-            start_hold_next <= '0';
-            if(start = '1' or start_hold = '1') then
-                done <= '1';
-            end if;
-        elsif(start = '1') then
-            start_hold_next <= '1';
+        if(countdown = 0 and start_hold = '1') then
+            done <= '1';
+		else
+			done <= '0';
         end if;
     end process;
     
@@ -46,7 +38,11 @@ begin
                 start_hold  <= '0';
                 countdown   <= 0;
             else
-                start_hold  <= start_hold_next;
+				if((start = '1' and countdown = 0) or countdown /= 0) then
+					start_hold <= '1';
+				else
+					start_hold <= '0';
+				end if;
                 
                 if(start = '1') then
                     countdown <= wait_cycles_int;
