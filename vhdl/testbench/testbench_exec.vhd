@@ -118,8 +118,8 @@ begin
     input : process
     begin  -- process input
         report "initiating test sequence!" severity note;
-        wait until rising_edge(clk);
 		wait until falling_edge(reset);
+        wait until rising_edge(clk);
 		
 		adc_rddata_uut <= std_logic_vector(to_unsigned(265, DATA_WIDTH));
 		
@@ -128,10 +128,19 @@ begin
 		for i in testcases_exec_op'high downto testcases_exec_op'low loop
 			op_uut <= testcases_exec_op(i);
 			start  <= '1';
-			wait until rising_edge(clk);
-			start  <= '0';
-			wait for 5 * CLK_PERIOD;
+			wait for CLK_PERIOD/2;
+            if(done = '1') then
+                wait until rising_edge(clk);
+                start <= '0';
+            else
+                wait until rising_edge(clk);
+                start <= '0';
+                wait until rising_edge(done);
+                wait until rising_edge(clk);
+            end if;
+            --  wait for CLK_PERIOD;
 		end loop;
+        start <= '0';
 		
 		
 		

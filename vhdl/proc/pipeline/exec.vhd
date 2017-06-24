@@ -84,7 +84,6 @@ architecture rtl of exec is
     signal alu_V        : std_logic;
 
     -- internal signals
-    signal start_hold, start_hold_next  : std_logic;
     signal zero_int, neg_int, ovf_int   : std_logic;
     
     -- sine signals
@@ -155,8 +154,21 @@ begin
 			done		=> wait_done
 		);
     
+    start_daemon : process(start, op_int.special_op)
+    begin
+        sine_start <= '0';
+        wait_start <= '0';
+        if(start = '1') then
+            if(op_int.special_op = SPECIAL_SIN) then
+                sine_start <= '1';
+            elsif(op_int.special_op = SPECIAL_WAIT) then
+                wait_start <= '1';
+            end if;
+        end if;
+    end process;
+    
     -- output process
-    exec_output: process (
+    exec_output : process (
         op_int, 
         alu_R, 
         alu_V, 
@@ -222,6 +234,7 @@ begin
         
         -- adc operation
         dac_wrdata <= op_int.dataa;
+        dac_valid <= '0';
         if(op_int.special_op = SPECIAL_DAC_OUT) then
             dac_valid <= '1';
         end if;
@@ -241,14 +254,12 @@ begin
     -- synch process
     exec_sync: process (clk, reset)
     begin
-        if rising_edge(clk) then
-            if reset = '1' then
+        if(rising_edge(clk)) then
+            if(reset = '1') then
                 op_int          <= EXEC_NOP;
                 adc_rddata_int  <= (others => '0');
-                start_hold      <= '0';
             else
                 op_int          <= op;
-                start_hold      <= start_hold_next;
                 adc_rddata_int  <= adc_rddata;
             end if;
         end if;
