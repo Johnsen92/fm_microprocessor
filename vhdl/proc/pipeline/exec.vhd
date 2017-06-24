@@ -15,9 +15,6 @@ entity exec is
         -- for operations
         op              : in  EXEC_OP_T;
         result          : out REG_DATA_T;
-        zero            : out std_logic;
-        neg             : out std_logic;
-        ovf             : out std_logic;
         jmp             : out std_logic;
         -- interface with ADC/DAC
         adc_rddata      : in  REG_DATA_T;
@@ -85,11 +82,7 @@ architecture rtl of exec is
     
     -- mult signals
     signal mult_result      : std_logic_vector(DATA_WIDTH-1 downto 0);
-begin
-    zero    <= zero_int;
-    neg     <= neg_int;
-    ovf     <= ovf_int;
-    
+begin    
     -- instances
     alu_inst : alu
         port map (
@@ -212,7 +205,6 @@ begin
                     dataa       => (others => '0'),
                     datab       => (others => '0'),
                     rs          => (others => '0'),
-                    rt          => (others => '0'),
                     rd          => (others => '0'),
                     imm         => (others => '0'),
                     addr        => (others => '0'),

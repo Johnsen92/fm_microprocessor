@@ -38,18 +38,18 @@ architecture beh of testbench_exec is
 	-- UUT signals IN
 	signal clk, reset			: std_logic;
 	signal start, done			: std_logic := '0';
-	signal op_uut				: exec_op_type := EXEC_NOP;
-	signal adc_rddata_uut		: std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
-	signal dac_wrdata_uut		: std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
+	signal op_uut				: EXEC_OP_T := EXEC_NOP;
+	signal adc_rddata_uut		: REG_DATA_T := (others => '0');
+	signal dac_wrdata_uut		: REG_DATA_T := (others => '0');
 	signal dac_valid_uut		: std_logic := '0';
 
 	
 	-- UUT signals OUT
-	signal jmp_uut				: std_logic_vector(ADDR_WIDTH_BITS-1 downto 0) := (others => '0');
-	signal result_uut    		: std_logic := '0';
+	signal jmp_uut				: std_logic := '0';
+	signal result_uut    		: REG_DATA_T := (others => '0');
 	
 	-- testcases 
-	type testcase_exec_op_array is array(1 downto 0) of exec_op_type;
+	type testcase_exec_op_array is array(1 downto 0) of EXEC_OP_T;
     constant testcases_exec_op : testcase_exec_op_array := (
         (
 			alu_op 		=> ALU_ADD,
@@ -59,8 +59,8 @@ architecture beh of testbench_exec is
 			datab		=> std_logic_vector(to_unsigned(20, DATA_WIDTH)),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
-			imm			=> '0', 
-			addr		=> '0', 
+			imm			=> (others => '0'), 
+			addr		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -72,8 +72,8 @@ architecture beh of testbench_exec is
 			datab		=> std_logic_vector(to_unsigned(20, DATA_WIDTH)),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
-			imm			=> '0', 
-			addr		=> '0', 
+			imm			=> (others => '0'), 
+			addr		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		)
