@@ -65,11 +65,11 @@ architecture beh of testbench_exec is
 			writeback	=> '0'
 		),
 		(
-			alu_op 		=> ALU_ADD,
+			alu_op 		=> ALU_NOP,
 			jmp_op		=> JMP_NOP,
-			special_op 	=> SPECIAL_NOP, 
+			special_op 	=> SPECIAL_SIN, 
 			dataa		=> std_logic_vector(to_unsigned(15, DATA_WIDTH)), 
-			datab		=> std_logic_vector(to_unsigned(20, DATA_WIDTH)),
+			datab		=> (others => '0'),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
@@ -130,8 +130,6 @@ begin
 			start  <= '1';
 			wait until rising_edge(clk);
 			start  <= '0';
-			wait until done = '1';
-			op_uut <= EXEC_NOP;
 			wait for 5 * CLK_PERIOD;
 		end loop;
 		

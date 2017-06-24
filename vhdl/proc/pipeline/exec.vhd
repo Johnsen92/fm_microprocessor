@@ -61,6 +61,19 @@ architecture rtl of exec is
             result              : out std_logic_vector(OUTPUT_DATA_WIDTH-1 downto 0)
         );
     end component;
+	
+	component wait_unit is
+    generic (
+        DATA_WIDTH  : integer := 11
+    );
+	port (
+        clk         : in std_logic;
+        reset       : in std_logic;
+        wait_cycles : in std_logic_vector(DATA_WIDTH-1 downto 0);
+        start       : in std_logic;
+        done        : out std_logic
+	);
+	end component;
     
     signal op_int       : EXEC_OP_T;
     signal alu_A        : REG_DATA_T;
@@ -82,6 +95,12 @@ architecture rtl of exec is
     
     -- mult signals
     signal mult_result      : std_logic_vector(DATA_WIDTH-1 downto 0);
+	
+	-- wait signals
+	signal wait_cycles		: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal wait_start		: std_logic;
+	signal wait_done		: std_logic;
+	
 begin    
     -- instances
     alu_inst : alu
@@ -118,6 +137,18 @@ begin
             datab    => op_int.datab,
             result   => mult_result
         );
+		
+	wait_int : wait_unit
+		generic map(
+			DATA_WIDTH => DATA_WIDTH
+		)
+		port map(
+			clk			=> clk,
+			reset		=> reset,
+			wait_cycles	=> wait_cycles,
+			start		=> wait_start,
+			done		=> wait_done
+		);
     
     -- output process
     exec_output: process (
@@ -168,9 +199,18 @@ begin
             result <= (others => '0');
         end if;
 
+		-- wait cycle count multiplexer
+		if(op_int.use_imm = '1') then
+			wait_cycles <= std_logic_vector(resize(signed(op_int.imm), REG_DATA_T'length));
+		else
+			wait_cycles <= op_int.dataa;
+		end if;
+		
         -- done flag multiplexer
         if(op_int.special_op = SPECIAL_SIN) then
             done <= sine_done;
+		elsif(op_int.special_op = SPECIAL_WAIT) then
+			done <= wait_done;
         else
             done <= start;
         end if;
