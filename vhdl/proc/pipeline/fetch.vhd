@@ -12,7 +12,7 @@ entity fetch is
 		start		: in std_logic;
 		done		: out std_logic;
         jmp         : in std_logic;
-        jmp_pc      : in PC_T;
+        jmp_addr    : in JMP_ADDR_T;
         instr       : out INSTR_T
     );
 end fetch;
@@ -21,12 +21,12 @@ architecture fetch_arc of fetch is
 
 	component imem is
     port (
-        addr 	: in JMP_ADDR_T;
-        instr	: out INSTR_T;
+        addr 	: in PC_T;
+        instr	: out INSTR_T
     );
 	end component;
 
-    signal pc, pc_next : PC_T;
+    signal pc, pc_next, jmp_pc : PC_T;
     signal reset_hold : std_logic;
 	signal imem_instr : INSTR_T;
 begin
@@ -36,7 +36,16 @@ begin
 			addr => pc,
 			instr => imem_instr
 		);
-
+    
+    jmp_pc_conversion : process(jmp_addr)
+    begin
+        if(to_integer(unsigned(jmp_addr)) > MAX_PC) then
+            jmp_pc <= MAX_PC;
+        else
+            jmp_pc <= to_integer(unsigned(jmp_addr));
+        end if;
+    end process;
+    
     pc_logic : process(pc, jmp)
     begin
         -- default:

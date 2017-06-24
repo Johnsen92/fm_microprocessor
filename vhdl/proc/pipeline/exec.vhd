@@ -15,6 +15,8 @@ entity exec is
         -- for operations
         op              : in  EXEC_OP_T;
         result          : out REG_DATA_T;
+        writeback       : out std_logic;
+        rd              : out REG_ADDR_T;
         jmp             : out std_logic;
         -- interface with ADC/DAC
         adc_rddata      : in  REG_DATA_T;
@@ -101,7 +103,10 @@ architecture rtl of exec is
 	signal wait_start		: std_logic;
 	signal wait_done		: std_logic;
 	
-begin    
+begin
+    writeback <= op_int.writeback;
+    rd <= op_int.rd;
+
     -- instances
     alu_inst : alu
         port map (
@@ -238,19 +243,7 @@ begin
     begin
         if rising_edge(clk) then
             if reset = '1' then
-                op_int          <= ( --TODO make an EXEC_NOP constant
-                    alu_op      => ALU_NOP,
-                    jmp_op      => JMP_NOP,
-                    special_op  => SPECIAL_NOP,
-                    dataa       => (others => '0'),
-                    datab       => (others => '0'),
-                    rs          => (others => '0'),
-                    rd          => (others => '0'),
-                    imm         => (others => '0'),
-                    addr        => (others => '0'),
-                    use_imm     => '0',
-                    writeback   => '0'
-                );
+                op_int          <= EXEC_NOP;
                 adc_rddata_int  <= (others => '0');
                 start_hold      <= '0';
             else

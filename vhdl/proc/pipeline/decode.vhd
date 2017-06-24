@@ -39,7 +39,6 @@ architecture decode_arc of decode is
         alias op : OP_T is instr_int(INSTR_FIELD_OP'high downto INSTR_FIELD_OP'low);
         alias rd : REG_ADDR_T is instr_int(INSTR_FIELD_RD'high downto INSTR_FIELD_RD'low);
         alias rs : REG_ADDR_T is instr_int(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
-        alias rt : REG_ADDR_T is instr_int(INSTR_FIELD_RT'high downto INSTR_FIELD_RT'low);
         alias imm : IMM_DATA_T is instr_int(INSTR_FIELD_IMM'high downto INSTR_FIELD_IMM'low);
         alias addr : JMP_ADDR_T is instr_int(INSTR_FIELD_ADDR'high downto INSTR_FIELD_ADDR'low);
         
@@ -72,7 +71,6 @@ begin
             datab       => regfile_datab,
             rd          => rd,
             rs          => rs,
-            rt          => rt,
             imm         => imm,
             addr        => addr,
             use_imm     => '0',
