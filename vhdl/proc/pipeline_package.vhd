@@ -19,6 +19,8 @@ package pipeline_package is
     constant REG_ADDR_WIDTH : integer := 5;
     constant IMM_WIDTH      : integer := 11;
     constant JMP_ADDR_WIDTH : integer := 16;
+	constant ADC_WIDTH		: integer := 12;
+	constant DAC_WIDTH		: integer := 14;
     -- used for reading fields from instr
     subtype INSTR_FIELD_OP      is integer range 21 downto 16;
     subtype INSTR_FIELD_RD      is integer range 15 downto 11;
@@ -36,6 +38,8 @@ package pipeline_package is
     subtype REG_DATA_T is std_logic_vector(DATA_WIDTH-1 downto 0);
     subtype IMM_DATA_T is std_logic_vector(IMM_WIDTH-1 downto 0);
     subtype JMP_ADDR_T is std_logic_vector(JMP_ADDR_WIDTH-1 downto 0);
+	subtype ADC_DATA_T is std_logic_vector(ADC_WIDTH-1 downto 0);
+	subtype DAC_DATA_T is std_logic_vector(DAC_WIDTH-1 downto 0);
     type ALU_OP_T is (
         ALU_NOP,
         ALU_ADD,
