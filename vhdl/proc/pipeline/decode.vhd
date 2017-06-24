@@ -8,6 +8,8 @@ entity decode is
     port (
         clk         : in std_logic;
         reset       : in std_logic;
+		start		: in std_logic;
+		done		: out std_logic;
         instr       : in INSTR_T;
         -- for regfile:
         wr          : in std_logic;
@@ -154,7 +156,9 @@ begin
         if(rising_edge(clk)) then
             if(reset = '1') then
                 instr_int <= (others => '0');
+				done <= '0';
             else
+				done <= start;
                 instr_int <= instr;
             end if;
         end if;

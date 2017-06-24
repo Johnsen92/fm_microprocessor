@@ -9,6 +9,8 @@ entity fetch is
     port (
         clk         : in std_logic;
         reset       : in std_logic;
+		start		: in std_logic;
+		done		: out std_logic;
         jmp         : in std_logic;
         jmp_pc      : in PC_T;
         instr       : out INSTR_T
@@ -16,9 +18,25 @@ entity fetch is
 end fetch;
 
 architecture fetch_arc of fetch is
+
+	component imem is
+    port (
+        addr 	: in JMP_ADDR_T;
+        instr	: out INSTR_T;
+    );
+	end component;
+
     signal pc, pc_next : PC_T;
     signal reset_hold : std_logic;
+	signal imem_instr : INSTR_T;
 begin
+
+	imem_inst: imem
+		port map(
+			addr => pc,
+			instr => imem_instr
+		);
+
     pc_logic : process(pc, jmp)
     begin
         -- default:
@@ -41,7 +59,9 @@ begin
             if(reset = '1') then
                 pc <= 0;
                 instr <= (others => '0');
+				done <= '0';
             else
+				done <= start;
                 if(reset_hold = '1') then
                     pc <= 0;
                 else
@@ -50,7 +70,7 @@ begin
                 if(pc = MAX_PC) then
                     instr <= (others => '0');
                 else
-                    instr <= PROGRAM(pc);
+                    instr <= imem_instr;
                 end if;
             end if;
         end if;

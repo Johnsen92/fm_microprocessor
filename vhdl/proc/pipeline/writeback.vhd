@@ -8,6 +8,8 @@ entity writeback is
     port (
         clk         : in std_logic;
         reset       : in std_logic;
+		start		: in std_logic;
+		done		: in std_logic;
         writeback   : in std_logic;
         rd          : in REG_ADDR_T;
         data        : in REG_DATA_T;
@@ -26,7 +28,9 @@ begin
                 wr <= '0';
                 wraddr <= (others => '0');
                 wrdata <= (others => '0');
+				done <= '0';
             else
+				done <= start;
                 wr <= writeback;
                 wraddr <= rd;
                 wrdata <= data;
