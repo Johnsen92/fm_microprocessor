@@ -69,7 +69,6 @@ package pipeline_package is
 		dataa       : REG_DATA_T;
 		datab       : REG_DATA_T;
 		rs          : REG_ADDR_T;
-        rt          : REG_ADDR_T;
         rd          : REG_ADDR_T;
         imm         : IMM_DATA_T;
         addr        : JMP_ADDR_T;
@@ -77,6 +76,20 @@ package pipeline_package is
         writeback   : std_logic;
 	end record;
     
+	constant EXEC_NOP : EXEC_OP_T := (
+		ALU_NOP,
+		JMP_NOP,
+		SPECIAL_NOP,
+		(others => '0'),
+		(others => '0'),
+		(others => '0'),
+		(others => '0'),
+		(others => '0'),
+		(others => '0'),
+		'0',
+		'0'
+	);
+	
     -------------------------------
     -- Instruction Set Op-Codes  --
     -------------------------------
