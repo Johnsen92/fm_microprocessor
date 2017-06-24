@@ -14,7 +14,7 @@ entity adc_dac is
 		dac_valid_in	: in std_logic;
 		adc_rddata_out	: out REG_DATA_T;
 		dac_wrdata_out	: out DAC_DATA_T;
-		dac_valid_out	: out std_logic;
+		dac_valid_out	: out std_logic
     );
 end adc_dac;
 
@@ -24,10 +24,10 @@ begin
 	output: process(adc_rddata_in)  
 	begin
 		-- ADC input
-		adc_rddata_out <= adc_rddata_in;
+		adc_rddata_out <= std_logic_vector(resize(signed(adc_rddata_in),DATA_WIDTH));
 		
 		-- DAC output
 		dac_wrdata_out_tmp <= std_logic_vector(signed(dac_wrdata_in) + signed(float_to_fixed(1.1, DATA_WIDTH - Q_FORMAT_INTEGER_PLACES, DATA_WIDTH)));
-		dac_wrdata_out <= dac_wrdata_out_tmp(DATA_WIDTH-2 downto 0) & "0";
+		dac_wrdata_out <= dac_wrdata_out_tmp(DATA_WIDTH-(DATA_WIDTH - DAC_WIDTH)-2 downto 0) & "0";
 	end process;
 end architecture;
