@@ -1,0 +1,9 @@
+# ignore everything
+*
+
+# except the following:
+!.gitignore
+!modelsim/*.do
+!vhdl/*/*.vhd
+
+!*/
