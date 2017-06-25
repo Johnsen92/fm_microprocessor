@@ -27,6 +27,7 @@ end writeback;
 
 architecture writeback_arc of writeback is
 begin
+    done <= start;
     
     sync : process(reset, clk)
     begin
@@ -37,9 +38,7 @@ begin
                 wrdata <= (others => '0');
                 jmp_addr <= (others => '0');
                 jmp_out <= '0';
-				done <= '0';
             else
-				done <= start;
                 wr <= writeback;
                 wraddr <= rd;
                 wrdata <= data;

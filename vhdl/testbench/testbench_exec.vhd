@@ -138,7 +138,7 @@ begin
                 wait until rising_edge(done);
                 wait until rising_edge(clk);
             end if;
-            --  wait for CLK_PERIOD;
+            wait for CLK_PERIOD;
 		end loop;
         start <= '0';
 		
