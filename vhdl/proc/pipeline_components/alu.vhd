@@ -18,7 +18,6 @@ architecture rtl of alu is
 
 signal R_int : REG_DATA_T;
 
-
 begin
     alu_result : process(A, B, op)
     begin

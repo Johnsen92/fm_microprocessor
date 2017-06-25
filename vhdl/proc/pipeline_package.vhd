@@ -19,8 +19,8 @@ package pipeline_package is
     constant REG_ADDR_WIDTH : integer := 5;
     constant IMM_WIDTH      : integer := 11;
     constant JMP_ADDR_WIDTH : integer := 16;
-	constant ADC_WIDTH		: integer := 12;
-	constant DAC_WIDTH		: integer := 14;
+	constant ADC_WIDTH		: integer := 14;
+	constant DAC_WIDTH		: integer := 12;
     -- used for reading fields from instr
     subtype INSTR_FIELD_OP      is integer range 21 downto 16;
     subtype INSTR_FIELD_RD      is integer range 15 downto 11;

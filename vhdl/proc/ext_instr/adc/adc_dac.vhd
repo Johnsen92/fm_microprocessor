@@ -7,8 +7,6 @@ use work.sine_cordic_constants.all;
 
 entity adc_dac is
     port (
-        clk         	: in std_logic;
-        reset       	: in std_logic;
 		adc_rddata_in	: in ADC_DATA_T;
 		dac_wrdata_in	: in REG_DATA_T;
 		dac_valid_in	: in std_logic;

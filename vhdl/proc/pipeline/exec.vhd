@@ -183,8 +183,7 @@ begin
         wait_done, 
         zero_int, 
         ovf_int,
-        start,
-		wait_done
+        start
     )
     begin
         -- ALU inputs
@@ -201,7 +200,7 @@ begin
         else
             zero_int <= '0';
         end if;
-        neg_int <= alu_R(alu_R'high);
+        neg_int <= alu_R(alu_R'high) and not alu_V;
         ovf_int <= alu_V;
         
         -- result multiplexer

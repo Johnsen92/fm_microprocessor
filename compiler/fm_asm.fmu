@@ -11,7 +11,7 @@
 	MOVI	r6,0x6D		#r6 holds Pi
 	SLLI	r6,0d08		#
 	ORI		r6,0xE0		#
-	MOVI	r7,0x0A		#r7 holds cycles to wait
+	MOVI	r7,0d1130	#r7 holds cycles to wait
 	MOV		r8,r6		#r8 holds -Pi
 	XOR		r8,r0
 	INC		r8
