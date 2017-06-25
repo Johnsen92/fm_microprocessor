@@ -178,6 +178,10 @@ begin
                 exec_op.jmp_op <= JMP_JZ;
             when OP_JNZ =>
                 exec_op.jmp_op <= JMP_JNZ;
+			when OP_JN =>
+                exec_op.jmp_op <= JMP_JN;
+			when OP_JNN =>
+                exec_op.jmp_op <= JMP_JNN;
             when OP_WAIT =>
                 exec_op.special_op <= SPECIAL_WAIT;
             when others =>

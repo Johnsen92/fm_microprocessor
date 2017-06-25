@@ -57,7 +57,9 @@ package pipeline_package is
         JMP_JC,
         JMP_JNC,
         JMP_JZ,
-        JMP_JNZ
+        JMP_JNZ,
+		JMP_JN,
+		JMP_JNN
     );
     type SPECIAL_OP_T is (
         SPECIAL_NOP,
@@ -129,6 +131,8 @@ package pipeline_package is
     constant OP_JNC     : OP_T := "100010";
     constant OP_JZ      : OP_T := "100011";
     constant OP_JNZ     : OP_T := "100100";
+	constant OP_JN      : OP_T := "100101";
+	constant OP_JNN     : OP_T := "100110";
     constant OP_WAIT    : OP_T := "111111";
     
 end pipeline_package;

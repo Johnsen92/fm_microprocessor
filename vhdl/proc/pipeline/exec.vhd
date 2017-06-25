@@ -253,6 +253,8 @@ begin
             when JMP_JMP => jmp <= '1';
             when JMP_JZ =>  jmp <= zero_reg;
             when JMP_JNZ => jmp <= not zero_reg;
+			when JMP_JN => 	jmp <= neg_reg;
+			when JMP_JNN => jmp <= not neg_reg;
             when others =>  jmp <= '0';
         end case;
     end process exec_output;
