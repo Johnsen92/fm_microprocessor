@@ -21,20 +21,20 @@ architecture fetch_arc of fetch is
 
 	component imem is
     port (
-        addr 	: in PC_T;
+        pc      : in PC_T;
         instr	: out INSTR_T
     );
 	end component;
 
     signal pc, pc_next, jmp_pc : PC_T;
-    signal reset_hold : std_logic;
 	signal imem_instr : INSTR_T;
 begin
+    done <= start;
 
 	imem_inst: imem
 		port map(
-			addr => pc,
-			instr => imem_instr
+			pc      => pc_next,
+			instr   => imem_instr
 		);
     
     jmp_pc_conversion : process(jmp_addr)
@@ -46,41 +46,40 @@ begin
         end if;
     end process;
     
-    pc_logic : process(pc, jmp)
+    pc_logic : process(start, pc, jmp)
     begin
         -- default:
-        if(pc = MAX_PC) then
-            pc_next <= pc; -- program completed / bad jump
-        else
-            pc_next <= pc + 1;
-        end if;
-        
-        if(jmp = '1') then
-            pc_next <= jmp_pc;
+        pc_next <= pc;
+        if(start = '1') then
+                pc_next <= 0;
+            if(pc = MAX_PC) then
+                pc_next <= pc; -- program completed / bad jump
+            else
+                pc_next <= pc + 1;
+            end if;
+            
+            if(jmp = '1') then
+                pc_next <= jmp_pc;
+            end if;
         end if;
     end process;
 
+    output : process(pc, imem_instr)
+    begin
+        if(pc = MAX_PC) then
+            instr <= (others => '0');
+        else
+            instr <= imem_instr;
+        end if;
+    end process;
+    
     sync : process(reset, clk)
     begin
         if(rising_edge(clk)) then
-            reset_hold <= reset;
-            
             if(reset = '1') then
                 pc <= 0;
-                instr <= (others => '0');
-				done <= '0';
-            else
-				done <= start;
-                if(reset_hold = '1') then
-                    pc <= 0;
-                else
-                    pc <= pc_next;
-                end if;
-                if(pc = MAX_PC) then
-                    instr <= (others => '0');
-                else
-                    instr <= imem_instr;
-                end if;
+            elsif(start = '1') then
+                pc <= pc_next;
             end if;
         end if;
     end process;

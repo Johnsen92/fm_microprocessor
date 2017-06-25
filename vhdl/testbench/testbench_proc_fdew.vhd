@@ -6,10 +6,10 @@ use ieee.math_real.all;
 use work.pipeline_package.all;
 use work.program_package.all;
 
-entity testbench_proc_fde is
-end testbench_proc_fde;
+entity testbench_proc_fdew is
+end testbench_proc_fdew;
 
-architecture beh of testbench_proc_fde is
+architecture beh of testbench_proc_fdew is
     component fetch is
         port (
             clk         : in std_logic;

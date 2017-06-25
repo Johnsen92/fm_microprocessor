@@ -46,7 +46,11 @@ architecture decode_arc of decode is
     alias rdaddr_b is instr(INSTR_FIELD_RS'high downto INSTR_FIELD_RS'low);
     
     signal regfile_dataa, regfile_datab : REG_DATA_T;
+    signal stored_dataa, stored_datab : REG_DATA_T;
+    signal dataa, datab : REG_DATA_T;
 begin
+    done <= start;
+    
     regfile_inst : regfile
         port map (
             clk => clk,
@@ -60,15 +64,26 @@ begin
             rddata_b => regfile_datab
         );
     
-    do_decode : process(instr_int)
+    data_mux : process(start, regfile_dataa, regfile_datab, stored_dataa, stored_datab)
+    begin
+        if(start = '1') then
+            dataa <= regfile_dataa;
+            datab <= regfile_datab;
+        else
+            dataa <= stored_dataa;
+            datab <= stored_datab;
+        end if;
+    end process;
+    
+    do_decode : process(instr_int, dataa, datab)
     begin
         --default:
         exec_op <= (
             alu_op      => ALU_NOP,
             jmp_op      => JMP_NOP,
             special_op  => SPECIAL_NOP,
-            dataa       => regfile_dataa,
-            datab       => regfile_datab,
+            dataa       => dataa,
+            datab       => datab,
             rd          => rd,
             rs          => rs,
             imm         => imm,
@@ -97,7 +112,7 @@ begin
                 exec_op.writeback <= '1';
             when OP_INC =>
                 exec_op.alu_op <= ALU_ADD;
-                exec_op.imm <= std_logic_vector(to_signed(1, IMM_WIDTH));
+                exec_op.imm <= std_logic_vector(to_signed(1, exec_op.imm'length));
                 exec_op.use_imm <= '1';
                 exec_op.writeback <= '1';
             when OP_CP =>
@@ -154,10 +169,14 @@ begin
         if(rising_edge(clk)) then
             if(reset = '1') then
                 instr_int <= (others => '0');
-				done <= '0';
+                stored_dataa <= (others => '0');
+                stored_datab <= (others => '0');
             else
-				done <= start;
                 instr_int <= instr;
+                if(start = '1') then
+                    stored_dataa <= regfile_dataa;
+                    stored_datab <= regfile_datab;
+                end if;
             end if;
         end if;
     end process;

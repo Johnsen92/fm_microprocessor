@@ -176,6 +176,7 @@ begin
         mult_result, 
         sine_result, 
         sine_done, 
+        wait_done, 
         zero_int, 
         ovf_int,
         start,
