@@ -5,8 +5,12 @@ use ieee.math_real.all;
 
 use work.pipeline_package.all;
 use work.program_package.all;
+use work.sine_cordic_constants.all;
 
 entity testbench_fmuc is
+	port (
+		fixed_converted : out REG_DATA_T := float_to_fixed(0.000143, DATA_WIDTH - 1, DATA_WIDTH)
+	);
 end testbench_fmuc;
 
 architecture beh of testbench_fmuc is

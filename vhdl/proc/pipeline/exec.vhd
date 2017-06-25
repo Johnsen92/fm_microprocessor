@@ -86,6 +86,7 @@ architecture rtl of exec is
     -- internal signals
     signal zero_int, neg_int, ovf_int   : std_logic := '0';
 	signal zero_reg, neg_reg, ovf_reg   : std_logic := '0';
+	signal zero_reg_next, neg_reg_next, ovf_reg_next   : std_logic := '0';
 	signal done_int						: std_logic := '0';
     
     -- sine signals
@@ -266,19 +267,18 @@ begin
             else
                 op_int          <= op;
                 adc_rddata_int  <= adc_rddata;
+				if(done_int = '1') then
+					zero_reg_next 	<= zero_int;
+					ovf_reg_next 	<= ovf_int;
+					neg_reg_next 	<= neg_int;
+				end if;
+				
+				if(start = '1') then
+					zero_reg		<= zero_reg_next;
+					ovf_reg			<= ovf_reg_next;
+					neg_reg			<= neg_reg_next;
+				end if;
             end if;
         end if;
     end process exec_sync;
-	
-	status_reg_sync: process(clk, reset)
-	begin
-		if(falling_edge(clk)) then
-			if(done_int = '1' and reset = '0') then
-				zero_reg 	<= zero_int;
-				ovf_reg 	<= ovf_int;
-				neg_reg 	<= neg_int;
-			end if;
-		end if;
-	end process;
-
 end rtl;

@@ -95,7 +95,7 @@ architecture beh of testbench_exec is
 			jmp_op		=> JMP_NOP,
 			special_op 	=> SPECIAL_NOP, 
 			dataa		=> std_logic_vector(to_unsigned(10, DATA_WIDTH)), 
-			datab		=> std_logic_vector(to_unsigned(11, DATA_WIDTH)),
+			datab		=> std_logic_vector(to_unsigned(10, DATA_WIDTH)),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
