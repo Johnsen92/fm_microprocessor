@@ -51,7 +51,7 @@ begin
         -- default:
         pc_next <= pc;
         if(start = '1') then
-                pc_next <= 0;
+            pc_next <= 0;
             if(pc = MAX_PC) then
                 pc_next <= pc; -- program completed / bad jump
             else

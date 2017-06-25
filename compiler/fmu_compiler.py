@@ -157,7 +157,8 @@ for line in source_file:
 	while len(binary_string) < 22:
 		binary_string = binary_string + "0"
 		
-	binary_string = binary_string + "\n"
+	binary_string = "\"" + binary_string + "\",\n"
+	print("Line: " + str(line_count))
 	
 	# Write to output file
 	binary_file.write(binary_string)

@@ -46,7 +46,10 @@ package pipeline_package is
         ALU_SUB,
         ALU_AND,
         ALU_OR,
-        ALU_XOR
+        ALU_XOR,
+		ALU_SLL,
+		ALU_SRL,
+		ALU_SRA
     );
     type JMP_OP_T is (
         JMP_NOP,
@@ -110,11 +113,17 @@ package pipeline_package is
     constant OP_AND     : OP_T := "001010";
     constant OP_OR      : OP_T := "001011";
     constant OP_XOR     : OP_T := "001100";
+	constant OP_SLL     : OP_T := "001101";
+	constant OP_SRL     : OP_T := "001110";
+	constant OP_SRA     : OP_T := "001111";
     constant OP_MOVI    : OP_T := "010100";
     constant OP_ADDI    : OP_T := "010101";
     constant OP_ANDI    : OP_T := "011010";
     constant OP_ORI     : OP_T := "011011";
     constant OP_XORI    : OP_T := "011100";
+	constant OP_SLLI    : OP_T := "011101";
+	constant OP_SRLI    : OP_T := "011110";
+	constant OP_SRAI    : OP_T := "011111";
     constant OP_JMP     : OP_T := "100000";
     constant OP_JC      : OP_T := "100001";
     constant OP_JNC     : OP_T := "100010";

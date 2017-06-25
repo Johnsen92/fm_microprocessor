@@ -91,42 +91,42 @@ architecture beh of testbench_exec is
 			writeback	=> '0'
 		),
 		(
-			alu_op 		=> ALU_NOP,
+			alu_op 		=> ALU_SUB,
 			jmp_op		=> JMP_NOP,
-			special_op 	=> SPECIAL_WAIT, 
-			dataa		=> (others => '0'), 
-			datab		=> (others => '0'),
+			special_op 	=> SPECIAL_NOP, 
+			dataa		=> std_logic_vector(to_unsigned(10, DATA_WIDTH)), 
+			datab		=> std_logic_vector(to_unsigned(11, DATA_WIDTH)),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
-			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
+			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
-			use_imm		=> '1', 
+			use_imm		=> '0', 
 			writeback	=> '0'
 		),
 		(
 			alu_op 		=> ALU_NOP,
-			jmp_op		=> JMP_NOP,
-			special_op 	=> SPECIAL_WAIT, 
+			jmp_op		=> JMP_JZ,
+			special_op 	=> SPECIAL_NOP, 
 			dataa		=> (others => '0'), 
 			datab		=> (others => '0'),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
-			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
-			addr		=> (others => '0'), 
-			use_imm		=> '1', 
+			imm			=> (others => '0'), 
+			addr		=> std_logic_vector(to_unsigned(10, JMP_ADDR_WIDTH)), 
+			use_imm		=> '0', 
 			writeback	=> '0'
 		),
 		(
-			alu_op 		=> ALU_NOP,
+			alu_op 		=> ALU_ADD,
 			jmp_op		=> JMP_NOP,
-			special_op 	=> SPECIAL_WAIT, 
-			dataa		=> (others => '0'), 
+			special_op 	=> SPECIAL_NOP, 
+			dataa		=> std_logic_vector(to_unsigned(10, DATA_WIDTH)), 
 			datab		=> (others => '0'),
 			rs			=> (others => '0'),
 			rd			=> (others => '0'),
-			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
+			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
-			use_imm		=> '1', 
+			use_imm		=> '0', 
 			writeback	=> '0'
 		)
     );
@@ -191,6 +191,10 @@ begin
                 wait until rising_edge(clk);
             end if;
             wait for CLK_PERIOD;
+			wait for CLK_PERIOD;
+			wait for CLK_PERIOD;
+			wait for CLK_PERIOD;
+			wait for CLK_PERIOD;
 		end loop;
         start <= '0';
 		

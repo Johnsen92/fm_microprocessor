@@ -35,6 +35,12 @@ begin
                 R_int <= A OR B ;
             when ALU_XOR =>
                 R_int <= A XOR B ;
+			when ALU_SLL =>
+				R_int <= std_logic_vector(shift_left(unsigned(A), to_integer(unsigned(B))));
+			when ALU_SRL =>
+				R_int <= std_logic_vector(shift_right(unsigned(A), to_integer(unsigned(B))));
+			when ALU_SRA =>
+				R_int <= std_logic_vector(shift_right(signed(A), to_integer(unsigned(B))));
         end case;
     end process alu_result;
     

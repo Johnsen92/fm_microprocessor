@@ -84,7 +84,9 @@ architecture rtl of exec is
     signal alu_V        : std_logic;
 
     -- internal signals
-    signal zero_int, neg_int, ovf_int   : std_logic;
+    signal zero_int, neg_int, ovf_int   : std_logic := '0';
+	signal zero_reg, neg_reg, ovf_reg   : std_logic := '0';
+	signal done_int						: std_logic := '0';
     
     -- sine signals
     signal sine_done        : std_logic;
@@ -105,6 +107,7 @@ architecture rtl of exec is
 begin
     writeback <= op_int.writeback;
     rd <= op_int.rd;
+	done <= done_int;
 
     -- instances
     alu_inst : alu
@@ -215,7 +218,7 @@ begin
         elsif(op_int.use_imm = '1') then
             result <= std_logic_vector(resize(signed(op_int.imm), REG_DATA_T'length));
         else
-            result <= (others => '0');
+            result <= op_int.datab;
         end if;
 
 		-- wait cycle count multiplexer
@@ -227,11 +230,11 @@ begin
 		
         -- done flag multiplexer
         if(op_int.special_op = SPECIAL_SIN) then
-            done <= sine_done;
+            done_int <= sine_done;
 		elsif(op_int.special_op = SPECIAL_WAIT) then
-			done <= wait_done;
+			done_int <= wait_done;
         else
-            done <= start;
+            done_int <= start;
         end if;
         
         -- adc operation
@@ -244,11 +247,11 @@ begin
         -- jump unit
         case op_int.jmp_op is
             when JMP_NOP => jmp <= '0';
-            when JMP_JC =>  jmp <= ovf_int;
-            when JMP_JNC => jmp <= not ovf_int;
+            when JMP_JC =>  jmp <= ovf_reg;
+            when JMP_JNC => jmp <= not ovf_reg;
             when JMP_JMP => jmp <= '1';
-            when JMP_JZ =>  jmp <= zero_int;
-            when JMP_JNZ => jmp <= not zero_int;
+            when JMP_JZ =>  jmp <= zero_reg;
+            when JMP_JNZ => jmp <= not zero_reg;
             when others =>  jmp <= '0';
         end case;
     end process exec_output;
@@ -266,5 +269,16 @@ begin
             end if;
         end if;
     end process exec_sync;
+	
+	status_reg_sync: process(clk, reset)
+	begin
+		if(falling_edge(clk)) then
+			if(done_int = '1' and reset = '0') then
+				zero_reg 	<= zero_int;
+				ovf_reg 	<= ovf_int;
+				neg_reg 	<= neg_int;
+			end if;
+		end if;
+	end process;
 
 end rtl;
