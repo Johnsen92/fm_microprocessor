@@ -49,7 +49,7 @@ architecture beh of testbench_exec is
 	signal result_uut    		: REG_DATA_T := (others => '0');
 	
 	-- testcases 
-	type testcase_exec_op_array is array(1 downto 0) of EXEC_OP_T;
+	type testcase_exec_op_array is array(3 downto 0) of EXEC_OP_T;
     constant testcases_exec_op : testcase_exec_op_array := (
         (
 			alu_op 		=> ALU_ADD,
@@ -75,6 +75,58 @@ architecture beh of testbench_exec is
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
 			use_imm		=> '0', 
+			writeback	=> '0'
+		),
+		(
+			alu_op 		=> ALU_NOP,
+			jmp_op		=> JMP_NOP,
+			special_op 	=> SPECIAL_MUL, 
+			dataa		=> "0010000000000000", 
+			datab		=> "0100000000000000",
+			rs			=> (others => '0'),
+			rd			=> (others => '0'),
+			imm			=> (others => '0'), 
+			addr		=> (others => '0'), 
+			use_imm		=> '0', 
+			writeback	=> '0'
+		),
+		(
+			alu_op 		=> ALU_NOP,
+			jmp_op		=> JMP_NOP,
+			special_op 	=> SPECIAL_WAIT, 
+			dataa		=> (others => '0'), 
+			datab		=> (others => '0'),
+			rs			=> (others => '0'),
+			rd			=> (others => '0'),
+			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
+			addr		=> (others => '0'), 
+			use_imm		=> '1', 
+			writeback	=> '0'
+		),
+		(
+			alu_op 		=> ALU_NOP,
+			jmp_op		=> JMP_NOP,
+			special_op 	=> SPECIAL_WAIT, 
+			dataa		=> (others => '0'), 
+			datab		=> (others => '0'),
+			rs			=> (others => '0'),
+			rd			=> (others => '0'),
+			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
+			addr		=> (others => '0'), 
+			use_imm		=> '1', 
+			writeback	=> '0'
+		),
+		(
+			alu_op 		=> ALU_NOP,
+			jmp_op		=> JMP_NOP,
+			special_op 	=> SPECIAL_WAIT, 
+			dataa		=> (others => '0'), 
+			datab		=> (others => '0'),
+			rs			=> (others => '0'),
+			rd			=> (others => '0'),
+			imm			=> std_logic_vector(to_unsigned(10, IMM_WIDTH)), 
+			addr		=> (others => '0'), 
+			use_imm		=> '1', 
 			writeback	=> '0'
 		)
     );
@@ -138,7 +190,7 @@ begin
                 wait until rising_edge(done);
                 wait until rising_edge(clk);
             end if;
-            --  wait for CLK_PERIOD;
+            wait for CLK_PERIOD;
 		end loop;
         start <= '0';
 		

@@ -178,7 +178,8 @@ begin
         sine_done, 
         zero_int, 
         ovf_int,
-        start
+        start,
+		wait_done
     )
     begin
         -- ALU inputs
