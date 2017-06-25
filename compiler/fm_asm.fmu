@@ -1,11 +1,26 @@
+	MOVI	r0,0xFF		#r0 holds 0xFFFF
+	SLLI	r0,0d08		#
+	ORI 	r0,0xFF		#
 	MOVI	r1,0x00		#r1 current_sine_angle
 	MOVI	r2,0x00		#r2 ADC_value
 	MOVI 	r3,0x00		#r3 cycles_wait_1khz
-	MOVI 	r4,0b101	#r4 angle_diff
+	MOVI 	r4,0x12		#r4 angle_diff
+	SLLI	r4,0d08		#
+	ORI 	r4,0x47		#
 	MOVI	r5,0x00		#r5 holds last sine angle	
-	ADD		r1,r4
-	MOV		r5,r1
+	MOVI	r6,0x6D		#r6 holds Pi
+	SLLI	r6,0d08		#
+	ORI		r6,0xE0		#
+	MOVI	r7,0x0A		#r7 holds cycles to wait
+	MOV		r8,r6		#r8 holds -Pi
+	XOR		r8,r0
+	INC		r8
 	SIN 	r5	
 	DAC_OUT	r5
-	WAIT	0d1134
-	JMP		0d5
+	ADD		r1,r4		#increment angle
+	MOV		r5,r1
+	CP		r6,r1
+	JNN		0d24
+	MOV		r1,r8		#set r1 to -Pi
+	WAIT	r7
+	JMP		0d17

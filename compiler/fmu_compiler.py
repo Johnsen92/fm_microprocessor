@@ -114,7 +114,9 @@ debug = False
 
 line_count = 0		
 		
-for line in source_file:
+for line_raw in source_file:
+	
+	line = re.sub(r"#.*$","", line_raw)
 	
 	# Regular expressions for operations, registers and immediates
 	op_string = re.findall("^\s*[a-zA-Z\_]+\s",line.rstrip())

@@ -46,7 +46,7 @@ begin
         end if;
     end process;
     
-    pc_logic : process(start, pc, jmp)
+    pc_logic : process(start, pc, jmp, jmp_pc)
     begin
         -- default:
         pc_next <= pc;

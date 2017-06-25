@@ -9,7 +9,7 @@ use work.sine_cordic_constants.all;
 
 entity testbench_fmuc is
 	port (
-		fixed_converted : out REG_DATA_T := float_to_fixed(0.000143, DATA_WIDTH - 1, DATA_WIDTH)
+		fixed_converted : out REG_DATA_T := float_to_fixed(-MATH_PI, DATA_WIDTH - 1, DATA_WIDTH)
 	);
 end testbench_fmuc;
 
