@@ -49,7 +49,7 @@ architecture beh of testbench_exec is
 	signal result_uut    		: REG_DATA_T := (others => '0');
 	
 	-- testcases 
-	type testcase_exec_op_array is array(3 downto 0) of EXEC_OP_T;
+	type testcase_exec_op_array is array(5 downto 0) of EXEC_OP_T;
     constant testcases_exec_op : testcase_exec_op_array := (
         (
 			alu_op 		=> ALU_ADD,
