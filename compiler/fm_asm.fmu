@@ -24,3 +24,6 @@
 	MOV		r1,r8		#set r1 to -Pi
 	WAIT	r7
 	JMP		0d17
+    
+    ADC_IN  r9          #r9 holds ADC output
+    MUL_ALT r9, r7      #multiply 
