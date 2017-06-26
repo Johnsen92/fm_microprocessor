@@ -36,13 +36,14 @@ architecture rtl of exec is
         );
     end component;
     
-    component mult2 is
+    component mult_fix is
         generic (
             DATA_WIDTH  : integer := 8
         );
         port (
             dataa   : in std_logic_vector(DATA_WIDTH-1 downto 0);
             datab   : in std_logic_vector(DATA_WIDTH-1 downto 0);
+            samt    : in OP_AUX_T;
             result  : out std_logic_vector(DATA_WIDTH-1 downto 0)
         );
     end component;
@@ -136,14 +137,15 @@ begin
             result  => sine_result
         );
         
-    mult_inst : mult2
+    mult_inst : mult_fix
         generic map(
             DATA_WIDTH => DATA_WIDTH
         )
         port map(
-            dataa    => op_int.dataa,
-            datab    => op_int.datab,
-            result   => mult_result
+            dataa   => op_int.dataa,
+            datab   => op_int.datab,
+            samt    => op_int.op_aux,
+            result  => mult_result
         );
 		
 	wait_int : wait_unit

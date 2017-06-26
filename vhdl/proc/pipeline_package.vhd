@@ -16,6 +16,7 @@ package pipeline_package is
     -------------------------------
     constant INSTR_WIDTH    : integer := 22;
     constant OP_WIDTH       : integer := 6;
+    constant OP_AUX_WIDTH   : integer := 6;
     constant REG_ADDR_WIDTH : integer := 5;
     constant IMM_WIDTH      : integer := 11;
     constant JMP_ADDR_WIDTH : integer := 16;
@@ -25,9 +26,10 @@ package pipeline_package is
     subtype INSTR_FIELD_OP      is integer range 21 downto 16;
     subtype INSTR_FIELD_RD      is integer range 15 downto 11;
     subtype INSTR_FIELD_RS      is integer range 10 downto 6;
-    subtype INSTR_FIELD_RT      is integer range 5  downto 1; --TODO only need 21 bits; need RT field? c=a+b or b=a+b?
+    subtype INSTR_FIELD_RT      is integer range 5  downto 1; -- unnecessary for current instruction set
     subtype INSTR_FIELD_IMM     is integer range 10 downto 0;
     subtype INSTR_FIELD_ADDR    is integer range 15 downto 0;
+    subtype INSTR_FIELD_OP_AUX  is integer range 5  downto 0; -- used for additional configuration of an operation
     
     -------------------------------
     -- Pipeline-Relevant Types   --
@@ -38,6 +40,7 @@ package pipeline_package is
     subtype REG_DATA_T is std_logic_vector(DATA_WIDTH-1 downto 0);
     subtype IMM_DATA_T is std_logic_vector(IMM_WIDTH-1 downto 0);
     subtype JMP_ADDR_T is std_logic_vector(JMP_ADDR_WIDTH-1 downto 0);
+    subtype OP_AUX_T is std_logic_vector(OP_AUX_WIDTH-1 downto 0);
 	subtype ADC_DATA_T is std_logic_vector(ADC_WIDTH-1 downto 0);
 	subtype DAC_DATA_T is std_logic_vector(DAC_WIDTH-1 downto 0);
     type ALU_OP_T is (
@@ -81,6 +84,7 @@ package pipeline_package is
         rd          : REG_ADDR_T;
         imm         : IMM_DATA_T;
         addr        : JMP_ADDR_T;
+        op_aux      : OP_AUX_T;
 		use_imm     : std_logic;
         writeback   : std_logic;
 	end record;
@@ -95,6 +99,7 @@ package pipeline_package is
 		(others => '0'),
 		(others => '0'),
 		(others => '0'),
+        (others => '0'),
 		'0',
 		'0'
 	);

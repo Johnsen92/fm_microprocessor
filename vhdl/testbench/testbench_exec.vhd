@@ -61,6 +61,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
+            op_aux		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -74,6 +75,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
+            op_aux		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -87,6 +89,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
+            op_aux		=> "001101", -- Q3.13 * Q3.13 = Q6.26 --> Q3.13 by shifting 13 bits
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -100,6 +103,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
+            op_aux		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -113,6 +117,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> std_logic_vector(to_unsigned(10, JMP_ADDR_WIDTH)), 
+            op_aux		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		),
@@ -126,6 +131,7 @@ architecture beh of testbench_exec is
 			rd			=> (others => '0'),
 			imm			=> (others => '0'), 
 			addr		=> (others => '0'), 
+            op_aux		=> (others => '0'), 
 			use_imm		=> '0', 
 			writeback	=> '0'
 		)
