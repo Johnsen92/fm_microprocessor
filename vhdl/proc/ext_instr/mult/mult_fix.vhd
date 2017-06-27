@@ -35,7 +35,7 @@ begin
     rounded_product <= signed(unsigned(initial_product) + shifted_round_bit);
     result          <= std_logic_vector(shifted_product(DATA_WIDTH*2-1 downto DATA_WIDTH));
     
-    shifter : process(rounded_product, samt_int)
+    shifter : process(rounded_product, samt_int, samt_int_norm)
     begin
         if(samt_int_norm > 0) then
             shifted_product     <= shift_left(rounded_product, samt_int_norm);

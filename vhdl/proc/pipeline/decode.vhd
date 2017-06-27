@@ -76,7 +76,7 @@ begin
         end if;
     end process;
     
-    do_decode : process(instr_int, dataa, datab)
+    do_decode : process(instr_int, op, dataa, datab)
     begin
         --default:
         exec_op <= (

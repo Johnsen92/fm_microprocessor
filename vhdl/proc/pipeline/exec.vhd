@@ -32,6 +32,8 @@ architecture rtl of exec is
             A   : in  REG_DATA_T;
             B   : in  REG_DATA_T;
             R   : out REG_DATA_T;
+            Z   : out std_logic;
+            N   : out std_logic;
             V   : out std_logic
         );
     end component;
@@ -82,10 +84,11 @@ architecture rtl of exec is
     signal alu_A        : REG_DATA_T;
     signal alu_B        : REG_DATA_T;
     signal alu_R        : REG_DATA_T;
+    signal alu_Z        : std_logic;
+    signal alu_N        : std_logic;
     signal alu_V        : std_logic;
 
     -- internal signals
-    signal zero_int, neg_int, ovf_int   : std_logic := '0';
 	signal zero_reg, neg_reg, ovf_reg   : std_logic := '0';
 	signal zero_reg_next, neg_reg_next, ovf_reg_next   : std_logic := '0';
 	signal done_int						: std_logic := '0';
@@ -118,6 +121,8 @@ begin
             A => alu_A,
             B => alu_B,
             R => alu_R,
+            Z => alu_Z,
+            N => alu_N,
             V => alu_V
         );    
 
@@ -126,7 +131,7 @@ begin
             INPUT_DATA_WIDTH    => DATA_WIDTH, 
             OUTPUT_DATA_WIDTH   => DATA_WIDTH,
             INTERNAL_DATA_WIDTH => DATA_WIDTH,
-            ITERATION_COUNT     => CORDIC_ITERATIONS
+            ITERATION_COUNT     => DATA_WIDTH+6
         )
         port map (
             reset   => reset,
@@ -183,8 +188,9 @@ begin
         sine_result, 
         sine_done, 
         wait_done, 
-        zero_int, 
-        ovf_int,
+        zero_reg, 
+        neg_reg,
+        ovf_reg,
         start
     )
     begin
@@ -195,15 +201,6 @@ begin
             alu_B <= op_int.datab;
         end if;
         alu_A <= op_int.dataa;
-        
-        -- status flags
-        if(alu_R = std_logic_vector(to_signed(0, REG_DATA_T'length))) then -- TODO make const DATA_ZERO
-            zero_int <= '1';
-        else
-            zero_int <= '0';
-        end if;
-        neg_int <= alu_R(alu_R'high) and not alu_V;
-        ovf_int <= alu_V;
         
         -- result multiplexer
         if(op_int.special_op /= SPECIAL_NOP) then
@@ -267,19 +264,25 @@ begin
             if(reset = '1') then
                 op_int          <= EXEC_NOP;
                 adc_rddata_int  <= (others => '0');
+                zero_reg_next 	<= '0';
+                neg_reg_next 	<= '0';
+                ovf_reg_next 	<= '0';
+                zero_reg		<= '0';
+                neg_reg			<= '0';
+                ovf_reg			<= '0';
             else
                 op_int          <= op;
                 adc_rddata_int  <= adc_rddata;
 				if(done_int = '1') then
-					zero_reg_next 	<= zero_int;
-					ovf_reg_next 	<= ovf_int;
-					neg_reg_next 	<= neg_int;
+					zero_reg_next 	<= alu_Z;
+                    neg_reg_next 	<= alu_N;
+					ovf_reg_next 	<= alu_V;
 				end if;
 				
 				if(start = '1') then
 					zero_reg		<= zero_reg_next;
+                    neg_reg			<= neg_reg_next;
 					ovf_reg			<= ovf_reg_next;
-					neg_reg			<= neg_reg_next;
 				end if;
             end if;
         end if;
