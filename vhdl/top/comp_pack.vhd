@@ -199,14 +199,16 @@ package comp_pack is
 
 	 
 	 component adc_dac is
-    port (
+	 port (
+		clk				: in std_logic;
+		reset			: in std_logic;
 		adc_rddata_in	: in ADC_DATA_T;
 		dac_wrdata_in	: in REG_DATA_T;
 		dac_valid_in	: in std_logic;
 		adc_rddata_out	: out REG_DATA_T;
 		dac_wrdata_out	: out DAC_DATA_T;
 		dac_valid_out	: out std_logic
-    );
+   );
 	end component;
 
   -----------------------------------------------------------------------------

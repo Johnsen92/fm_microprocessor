@@ -23,10 +23,30 @@ architecture beh of testbench_fmuc is
             dac_valid      	: out std_logic
         );
     end component;
+	
+	component adc_dac is
+		port (
+			clk				: in std_logic;
+			reset			: in std_logic;
+			adc_rddata_in	: in ADC_DATA_T;
+			dac_wrdata_in	: in REG_DATA_T;
+			dac_valid_in	: in std_logic;
+			adc_rddata_out	: out REG_DATA_T;
+			dac_wrdata_out	: out DAC_DATA_T;
+			dac_valid_out	: out std_logic
+		);
+	end component;
     
     constant CLK_PERIOD : time := 20 ns;
     
     signal clk, reset : std_logic;
+	signal adc_rddata_in_int : std_logic_vector(ADC_WIDTH-1 downto 0);
+	signal dac_wrdata_in_int : REG_DATA_T;
+	signal dac_valid_in_int : std_logic;
+	signal adc_rddata_out_int : REG_DATA_T;
+	signal dac_wrdata_out_int : std_logic_vector(DAC_WIDTH-1 downto 0);
+	signal dac_valid_out_int : std_logic;
+	signal sine : real;
     
 begin
     fmuc_inst : fmuc
@@ -34,10 +54,29 @@ begin
             clk         => clk,
             reset       => reset,
             adc_rddata  => x"BEEF",
-            dac_wrdata  => open,
-            dac_valid   => open
+            dac_wrdata  => dac_wrdata_in_int,
+            dac_valid   => dac_valid_in_int
         );
+		
+	adc_inst : adc_dac
+		port map(
+			clk				=> clk,
+			reset			=> reset,
+			adc_rddata_in 	=> adc_rddata_in_int,
+			dac_wrdata_in	=> dac_wrdata_in_int,
+			dac_valid_in	=> dac_valid_in_int,
+			adc_rddata_out	=> adc_rddata_out_int,
+			dac_wrdata_out	=> dac_wrdata_out_int,
+			dac_valid_out	=> dac_valid_out_int
+		);
     
+	sine_output : process(dac_valid_out_int)
+	begin
+		if(rising_edge(dac_valid_out_int)) then
+			sine <= fixed_to_float(dac_wrdata_in_int, DATA_WIDTH - Q_FORMAT_INTEGER_PLACES);
+		end if;
+	end process sine_output;
+	
     clkgen : process
     begin
         clk <= '0';

@@ -210,6 +210,8 @@ begin
     
 	 adc_dac_inst : adc_dac
 		port map (
+			clk				=> s_clk,
+			reset				=> s_reset,
 			adc_rddata_in	=> s_adc_ch1,
 			dac_wrdata_in	=> dac_wrdata_intermediate,
 			dac_valid_in	=> dac_valid_intermediate,
