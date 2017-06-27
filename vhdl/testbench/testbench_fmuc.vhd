@@ -54,7 +54,7 @@ architecture beh of testbench_fmuc is
     
 	constant CLK_PERIOD             : time := 20 ns;
     constant CLK_FREQ               : real := 50_000_000.0; -- CAUTION: compare with above
-    constant TIME_PRECISION         : integer := 19;
+    constant TIME_PRECISION         : integer := 16;
     constant INTERNAL_DATA_WIDTH    : integer := 16;
     constant INPUT_DATA_WIDTH       : integer := 14;
     constant OUTPUT_DATA_WIDTH      : integer := 12;
