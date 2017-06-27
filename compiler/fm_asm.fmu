@@ -20,7 +20,7 @@
     MOV     r11,r10	
     SRLI    r11,0x01    #shift one right to divide by 2, normalizing to deviation about 1: between 0.5 and 1.5
     MOV     r12,r11
-    MUL     r12,r7,0x0D #store deviated value of cycles_wait_1khz
+    MOV     r12,r7		#MUL     r12,r7,0x0D #store deviated value of cycles_wait_1khz
 	SIN 	r5	
 	DAC_OUT	r5
 	ADD		r1,r4		#increment angle
@@ -30,4 +30,4 @@
 	SUB		r1,r6
 	MOV		r5,r1
 	WAIT	r12
-	JMP		0d16
+	JMP		0d23
