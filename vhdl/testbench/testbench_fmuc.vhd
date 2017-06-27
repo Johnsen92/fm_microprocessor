@@ -53,7 +53,7 @@ begin
         port map (
             clk         => clk,
             reset       => reset,
-            adc_rddata  => x"BEEF",
+            adc_rddata  => x"0000",
             dac_wrdata  => dac_wrdata_in_int,
             dac_valid   => dac_valid_in_int
         );

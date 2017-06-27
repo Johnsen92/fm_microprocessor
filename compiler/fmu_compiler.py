@@ -82,6 +82,10 @@ def replace_imm(imm_string, imm_type):
 		print("Numeric error: address " + str(imm_int) + " out of range (max 65535)")
 		sys.exit(-1)
 	
+	if imm_type == 'M' and imm_int >= 64:
+		print("Numeric error: address " + str(imm_int) + " out of range (max 64)")
+		sys.exit(-1)
+	
 	# Return binary string representation of immediate
 	if imm_type == 'J':
 		bin_string = "{0:b}".format(imm_int) 
@@ -91,6 +95,11 @@ def replace_imm(imm_string, imm_type):
 	elif imm_type == 'I':
 		bin_string = "{0:b}".format(imm_int) 
 		while len(bin_string) < 11:
+			bin_string = "0" + bin_string
+		return bin_string
+	elif imm_type == 'M':
+		bin_string = "{0:b}".format(imm_int) 
+		while len(bin_string) < 6:
 			bin_string = "0" + bin_string
 		return bin_string
 	else:
@@ -146,14 +155,18 @@ for line_raw in source_file:
 	
 	# Parse immediate
 	if imm_string:
-		if len(binary_string) == 6:
-			if debug:
-				print(replace_imm(imm_string[0],"J"))
-			binary_string = binary_string + replace_imm(imm_string[0],"J")
-		if len(binary_string) == 11:
-			if debug:
-				print(replace_imm(imm_string[0],"I"))
-			binary_string = binary_string + replace_imm(imm_string[0],"I")
+		
+		if op == "MUL":
+			binary_string = binary_string + replace_imm(imm_string[0],"M")
+		else:
+			if len(binary_string) == 6:
+				if debug:
+					print(replace_imm(imm_string[0],"J"))
+				binary_string = binary_string + replace_imm(imm_string[0],"J")
+			if len(binary_string) == 11:
+				if debug:
+					print(replace_imm(imm_string[0],"I"))
+				binary_string = binary_string + replace_imm(imm_string[0],"I")
 	
 	
 	while len(binary_string) < 22:
