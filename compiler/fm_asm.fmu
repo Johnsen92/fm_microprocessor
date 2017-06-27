@@ -8,22 +8,17 @@
 	SLLI	r4,0d08		#
 	ORI 	r4,0x47		#
 	MOVI	r5,0x00		#r5 holds last sine angle	
-	MOVI	r6,0x6D		#r6 holds Pi
+	MOVI	r6,0x64		#r6 holds Pi
 	SLLI	r6,0d08		#
-	ORI		r6,0xE0		#
+	ORI		r6,0x84		#
 	MOVI	r7,0d1130	#r7 holds cycles to wait
-	MOV		r8,r6		#r8 holds -Pi
-	XOR		r8,r0
-	INC		r8
 	SIN 	r5	
 	DAC_OUT	r5
 	ADD		r1,r4		#increment angle
-	MOV		r5,r1
 	CP		r6,r1
-	JNN		0d24
-	MOV		r1,r8		#set r1 to -Pi
+	JNN		0d21
+	SUB		r1,r6		#set r1 to -Pi
+	SUB		r1,r6
+	MOV		r5,r1
 	WAIT	r7
-	JMP		0d17
-    
-    ADC_IN  r9          #r9 holds ADC output
-    MUL_ALT r9, r7      #multiply 
+	JMP		0d14
