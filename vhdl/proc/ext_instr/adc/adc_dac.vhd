@@ -25,7 +25,7 @@ begin
 	output: process(adc_rddata_in, dac_wrdata_in, dac_valid_in, dac_wrdata_out_tmp)  
 	begin
 		-- ADC input
-		adc_rddata_out <= std_logic_vector(resize(signed(adc_rddata_in),DATA_WIDTH));
+		adc_rddata_out <= adc_rddata_in & "00";
 		
 		-- DAC valid output
 		--dac_valid_out <= dac_valid_in;
