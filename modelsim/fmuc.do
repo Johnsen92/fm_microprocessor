@@ -4,6 +4,8 @@ add wave -noupdate /testbench_fmuc/clk
 add wave -noupdate /testbench_fmuc/reset
 add wave -noupdate -divider REGISTERS
 add wave -noupdate /testbench_fmuc/fmuc_inst/decode/regfile_inst/regfile
+add wave -noupdate -format Analog-Step -height 80 -max 1.0 -min -1.0 /testbench_fmuc/in_r
+add wave -noupdate -format Analog-Step -height 80 -max 1.0 -min -1.0 /testbench_fmuc/sine
 add wave -noupdate -divider FETCH
 add wave -noupdate /testbench_fmuc/fmuc_inst/fetch/start
 add wave -noupdate /testbench_fmuc/fmuc_inst/fetch/done
@@ -22,7 +24,7 @@ add wave -noupdate /testbench_fmuc/fmuc_inst/decode/rdaddr_b
 add wave -noupdate /testbench_fmuc/fmuc_inst/decode/rdaddr_a
 add wave -noupdate /testbench_fmuc/fmuc_inst/decode/regfile_dataa
 add wave -noupdate /testbench_fmuc/fmuc_inst/decode/regfile_datab
-add wave -noupdate /testbench_fmuc/fmuc_inst/decode/exec_op
+add wave -noupdate -expand /testbench_fmuc/fmuc_inst/decode/exec_op
 add wave -noupdate -divider EXEC
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/start
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/done
@@ -35,8 +37,6 @@ add wave -noupdate /testbench_fmuc/fmuc_inst/exec/dac_wrdata
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/dac_valid
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/op_int
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/alu_R
-add wave -noupdate /testbench_fmuc/fmuc_inst/exec/zero_int
-add wave -noupdate /testbench_fmuc/fmuc_inst/exec/ovf_int
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/sine_done
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/sine_result
 add wave -noupdate /testbench_fmuc/fmuc_inst/exec/sine_start
@@ -51,8 +51,8 @@ add wave -noupdate /testbench_fmuc/fmuc_inst/writeback/wr
 add wave -noupdate /testbench_fmuc/fmuc_inst/writeback/wraddr
 add wave -noupdate /testbench_fmuc/fmuc_inst/writeback/wrdata
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {150000 ps} 0}
-quietly wave cursor active 1
+WaveRestoreCursors {{Cursor 1} {10808190000 ps} 1} {{Cursor 2} {16984830000 ps} 1} {{Cursor 3} {10659330000 ps} 1} {{Cursor 4} {11009370000 ps} 1} {{Cursor 5} {13898430000 ps} 1} {{Cursor 6} {13791590000 ps} 1} {{Cursor 7} {13922410000 ps} 1}
+quietly wave cursor active 7
 configure wave -namecolwidth 127
 configure wave -valuecolwidth 101
 configure wave -justifyvalue left
@@ -67,4 +67,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {453610 ps}
+WaveRestoreZoom {9814126394 ps} {17246072634 ps}

@@ -40,6 +40,7 @@ begin
 	begin
 		if(rising_edge(clk)) then
             if(reset = '1') then
+                dac_valid_out <= '0';
                 dac_valid_in_next <= '0';
             else
 				dac_valid_out <= dac_valid_in_next;

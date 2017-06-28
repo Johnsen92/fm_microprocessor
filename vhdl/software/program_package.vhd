@@ -7,7 +7,7 @@ use work.pipeline_package.all;
 package program_package is
     
     --constant MAX_PC : integer := 16; -- TODO: incl or excl, what is at last pc if anything
-    constant MAX_PC : integer := 33;
+    constant MAX_PC : integer := 35;
     
     subtype PC_T is integer range 0 to MAX_PC;
     type INSTR_ARRAY_T is array(0 to MAX_PC) of INSTR_T;
@@ -29,6 +29,8 @@ package program_package is
 		"0101000100100001000000",
 		"0111010100100000001000",
 		"0000010101000000000000",
+        "0011000101000001000000",
+        "0101010101000000000001",
 		"0001000101101010000000",
 		"0001010101101001000000",
 		"0001000110001011000000",
@@ -39,7 +41,7 @@ package program_package is
 		"0010010011000000000000",
 		"0001010001000101000000",
 		"0010000011100010000000",
-		"1001100000000000011110",
+		"1001100000000000100000",
 		"0001100001000111000000",
 		"0001100001000111000000",
 		"0001000011000010000000",

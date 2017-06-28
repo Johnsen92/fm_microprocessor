@@ -60,7 +60,7 @@ architecture beh of testbench_fmuc is
     constant OUTPUT_DATA_WIDTH      : integer := 12;
     constant BAUD_RATE              : real := 44_000.0;
     constant CARRIER_FREQ           : real := 1_000.0;
-    constant FREQUENCY_DEV_KHZ      : real := 0.75;
+    constant FREQUENCY_DEV_KHZ      : real := 0.5;
 	constant INPUT_FREQ 			: real := 1000.0; -- used to drive input sine wave
     constant INCREMENT 				: real := 2.0**(-(INTERNAL_DATA_WIDTH - Q_FORMAT_INTEGER_PLACES));
     constant CLK_PER_INCREMENT 		: integer := integer(round(CLK_FREQ*INCREMENT));
@@ -74,7 +74,8 @@ architecture beh of testbench_fmuc is
 	signal adc_rddata_out_int : REG_DATA_T;
 	signal dac_wrdata_out_int : std_logic_vector(DAC_WIDTH-1 downto 0);
 	signal dac_valid_out_int : std_logic;
-	signal sine : real;
+	signal sine, sine2 : real;
+    signal dac_wrdata_stored : std_logic_vector(DAC_WIDTH-1 downto 0);
 	
 	signal phi : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal phi_r : real;
@@ -126,12 +127,20 @@ begin
 			dac_valid_out	=> dac_valid_out_int
 		);
     
-	sine_output : process(dac_valid_out_int)
+	sine_output : process(dac_valid_in_int)
 	begin
-		if(rising_edge(dac_valid_out_int)) then
+		if(rising_edge(dac_valid_in_int)) then
 			sine <= fixed_to_float(dac_wrdata_in_int, DATA_WIDTH - Q_FORMAT_INTEGER_PLACES);
 		end if;
 	end process sine_output;
+    
+    sine_output2 : process(dac_valid_out_int)
+	begin
+		if(rising_edge(dac_valid_out_int)) then
+			sine2 <= fixed_to_float('0' & dac_wrdata_out_int, DAC_WIDTH-1);
+            dac_wrdata_stored <= dac_wrdata_out_int;
+		end if;
+	end process sine_output2;
 	
     clkgen : process
     begin

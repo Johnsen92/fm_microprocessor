@@ -16,6 +16,8 @@
 	MOVI	r8,0x40		#r8 holds 2.0 fixpoint
 	SLLI	r8,0d8		#
 	ADC_IN  r9          #r9 holds ADC output (between -1 and 1)
+    XOR     r9, r0
+    ADDI    r9, 0x01    #negate value so that wait_cycles decreases with higher ADC amplitude
 	MOV		r10,r9      #
     ADD	    r10,r8		#add 2.0 fixpoint to ADC to bring between 1 and 3
     MOV     r11,r10	
@@ -26,7 +28,7 @@
 	DAC_OUT	r5
 	ADD		r1,r4		#increment angle
 	CP		r6,r1
-	JNN		0d31
+	JNN		0d33
 	SUB		r1,r6		#set r1 to -Pi
 	SUB		r1,r6
 	MOV		r5,r1
