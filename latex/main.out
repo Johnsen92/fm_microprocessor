@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Implementation}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Instruction set}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Registers}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Status register}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Structure}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Fetch stage}{subsection.2.4}% 7
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Decode stage}{subsection.2.4}% 8
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Execution stage}{subsection.2.4}% 9
+\BOOKMARK [3][-]{subsubsection.2.4.4}{Writeback stage}{subsection.2.4}% 10
+\BOOKMARK [3][-]{subsubsection.2.4.5}{Frequency Modulation Micro Controller \(FMUC\)}{subsection.2.4}% 11
+\BOOKMARK [2][-]{subsection.2.5}{Xilinx Project Properties}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Device Utilization}{subsection.2.5}% 13
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Timing Summary}{subsection.2.5}% 14
+\BOOKMARK [2][-]{subsection.2.6}{Program Code}{section.2}% 15
+\BOOKMARK [1][-]{section.3}{Testing and Results}{}% 16
